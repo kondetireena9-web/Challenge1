@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Healthcare Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #2E86C1;
+      color: white;
+      padding: 1.5em;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2em auto;
+      padding: 0 1em;
+    }
+
+    .cards {
+      display: flex;
+      gap: 1em;
+      flex-wrap: wrap;
+      margin-bottom: 2em;
+    }
+
+    .card {
+      flex: 1;
+      background: white;
+      padding: 1.5em;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      min-width: 200px;
+    }
+
+    .card h3 {
+      margin: 0 0 0.5em 0;
+      font-size: 1.2em;
+      color: #2E86C1;
+    }
+
+    .card .value {
+      font-size: 2em;
+      font-weight: bold;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5em;
+      margin-bottom: 2em;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .appointments ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .appointments li {
+      padding: 0.7em;
+      border-bottom: 1px solid #eee;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #777;
+      margin-top: 2em;
+      padding: 1em;
+    }
+
+    @media(max-width: 768px) {
+      .cards {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🏥 Healthcare Admin Dashboard</h1>
+  <p>Monitoring patient data and appointments</p>
+</header>
+
+<div class="container">
+
+  <div class="cards">
+    <div class="card">
+      <h3>Total Patients</h3>
+      <div class="value" id="totalPatients">--</div>
+    </div>
+    <div class="card">
+      <h3>Appointments Today</h3>
+      <div class="value" id="appointmentsToday">--</div>
+    </div>
+    <div class="card">
+      <h3>Admitted Patients</h3>
+      <div class="value" id="admittedPatients">--</div>
+    </div>
+  </div>
+
+  <div class="section appointments">
+    <h2>📅 Upcoming Appointments</h2>
+    <ul id="appointmentList">
+      <!-- Appointments will go here -->
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>📊 Patient Vitals Overview</h2>
+    <canvas id="vitalsChart"></canvas>
+  </div>
+</div>
+
+<footer>
+  © 2025 MediCare Dashboard
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Dummy Data
+  const stats = {
+    totalPatients: 1280,
+    appointmentsToday: 34,
+    admittedPatients: 76
+  };
+
+  const appointments = [
+    { name: "John Doe", time: "10:00 AM", doctor: "Dr. Smith" },
+    { name: "Mary Jane", time: "10:30 AM", doctor: "Dr. Adams" },
+    { name: "Robert Paul", time: "11:00 AM", doctor: "Dr. Evans" },
+    { name: "Sarah Miles", time: "11:30 AM", doctor: "Dr. Carter" },
+    { name: "Linda Wells", time: "12:00 PM", doctor: "Dr. Brown" }
+  ];
+
+  // Fill Stats
+  document.getElementById('totalPatients').innerText = stats.totalPatients;
+  document.getElementById('appointmentsToday').innerText = stats.appointmentsToday;
+  document.getElementById('admittedPatients').innerText = stats.admittedPatients;
+
+  // Fill Appointments
+  const appointmentList = document.getElementById('appointmentList');
+  appointments.forEach(appt => {
+    const li = document.createElement('li');
+    li.textContent = `${appt.time} - ${appt.name} with ${appt.doctor}`;
+    appointmentList.appendChild(li);
+  });
+
+  // Chart
+  const ctx = document.getElementById('vitalsChart').getContext('2d');
+  const vitalsChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      datasets: [{
+        label: 'Avg Heart Rate (bpm)',
+        data: [76, 78, 74, 80, 77],
+        borderColor: '#2E86C1',
+        backgroundColor: 'rgba(46, 134, 193, 0.1)',
+        tension: 0.3,
+        fill: true
+      }, {
+        label: 'Avg Blood Pressure (mmHg)',
+        data: [120, 125, 119, 122, 121],
+        borderColor: '#1ABC9C',
+        backgroundColor: 'rgba(26, 188, 156, 0.1)',
+        tension: 0.3,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        },
+        title: {
+          display: false
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
